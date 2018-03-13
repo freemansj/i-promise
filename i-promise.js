@@ -1,6 +1,6 @@
 
 
-class IPromise {
+class RePromise {
 	constructor(executor){
 		if(!isFunc(executor)) throw new TypeError("You should pass a function as the first argument to the promise constructor !");
 		this.status = 'pending';
@@ -23,7 +23,7 @@ class IPromise {
 	}
 
 	then(res,rej){
-		return new IPromise((actRes,actRej)=>{ // new executor(resolve,reject)
+		return new RePromise((actRes,actRej)=>{ // new executor(resolve,reject)
 			function factory(fn,type){
 				return (val)=>{
 					if(!isFunc(fn)) return type==='resolve'?
@@ -54,19 +54,19 @@ class IPromise {
 	}
 
 	catch(rej){
-		return this.then(null,rej);
+		return this.then( _ ,rej);
 	}
 
 	static resolve(val){
-		return new IPromise((res)=>{res(val)});
+		return new RePromise((res)=>{res(val)});
 	}
 	static reject(e){
-		return new IPromise((_,rej)=>{rej(e)});
+		return new RePromise((_,rej)=>{rej(e)});
 	}
 
 	static all(arrayOfPs){
-		if(!Array.isArray(arrayOfPs)) throw new TypeError("You should pass an array-obj to IPromise.all as argument");
-		return new IPromise((actRes,actRej)=>{
+		if(!Array.isArray(arrayOfPs)) throw new TypeError("You should pass an array-obj to RePromise.all as argument");
+		return new RePromise((actRes,actRej)=>{
 			let result= [];
 			let resolved = 0;
 			let breakFlag = false; //the flag to break from Array.some
@@ -78,7 +78,7 @@ class IPromise {
 					 * return result-array[ should keep the original order]
 					 */
 				});
-				ps.catch((e)=>{ 
+				ps.catch((e)=>{
 					actRej(e);
 					breakFlag = true;
 				});
@@ -90,8 +90,8 @@ class IPromise {
 	}
 
 	static race(arrayOfPs){
-		if(!Array.isArray(arrayOfPs)) throw new TypeError("You should pass an array-obj to IPromise.all as argument");
-		return new IPromise((actRes,actRej)=>{
+		if(!Array.isArray(arrayOfPs)) throw new TypeError("You should pass an array-obj to RePromise.all as argument");
+		return new RePromise((actRes,actRej)=>{
 			let mutex = 1;
 			arrayOfPs.some((ps,idx)=>{
 				ps.then((v)=>{
@@ -104,7 +104,16 @@ class IPromise {
 					return false;
 			});
 		});
-	}	
+	}
+
+	/*New functions*/
+	static timelimitPromise(fn , limit){
+		if(typeof limit !== 'number') throw new TypeError("you need to pass a limit-time(number) to timelimitPromise as the second argument");
+		var tp = new RePromise(function(_,rej){
+			setTimeout(rej,limit,"Timeout !!!");
+		});
+		return RePromise.race([new RePromise(fn),tp]);
+	}
 
 }
 
@@ -116,4 +125,4 @@ function isThenable(fn){
 	return fn && isFunc(fn.then);
 }
 
-module.exports = IPromise;
+module.exports.RePromise = RePromise;
