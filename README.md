@@ -1,2 +1,2 @@
-# i-promise
+# re-promise
  A simple implementation of Promise
