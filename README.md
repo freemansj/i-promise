@@ -9,18 +9,18 @@ $ npm install --save r-promise
 * Just like Promise...
  Re-promise provides `.resolve`, `.reject` , `.catch`, `.then` , `.all` , `.race`;
  
-* new functions: RePromise.timelimitPromise
- you can pass an executor with a limit time to timelimitPromise as argument 
+* new functions: RePromise.timelimit
+ you can pass an executor with a limit time to `.timelimit` as argument 
  ```js
  var RP = require('r-promise');
- RP.timelimitPromise((resolve,reject){
-    setTimeout(resolve,999,"done")
- },1000)
+ RP.timelimit((resolve,reject){
+    setTimeout(resolve,1000,"done")
+ },1001)
  .then(console.log,console.error); // done
  
-  RP.timelimitPromise((resolve,reject){
-    setTimeout(resolve,1001,"done")
- },1000)
+  RP.timelimit((resolve,reject){
+    setTimeout(resolve,1000,"done")
+ },999)
  .then(console.log,console.error); // Timeout !!!
  
  ```
