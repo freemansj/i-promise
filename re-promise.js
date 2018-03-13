@@ -107,7 +107,7 @@ class RePromise {
 	}
 
 	/*New functions*/
-	static timelimitPromise(fn , limit){
+	static timelimit(fn , limit){
 		if(typeof limit !== 'number') throw new TypeError("you need to pass a limit-time(number) to timelimitPromise as the second argument");
 		var tp = new RePromise(function(_,rej){
 			setTimeout(rej,limit,"Timeout !!!");
