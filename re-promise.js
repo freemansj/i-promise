@@ -54,7 +54,7 @@ class RePromise {
 	}
 
 	catch(rej){
-		return this.then( _ ,rej);
+		return this.then( null ,rej);
 	}
 
 	static resolve(val){
@@ -125,4 +125,4 @@ function isThenable(fn){
 	return fn && isFunc(fn.then);
 }
 
-module.exports.RePromise = RePromise;
+module.exports = RePromise;
