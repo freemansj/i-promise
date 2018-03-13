@@ -7,4 +7,4 @@
 ```
 
 # licence
- MIT
+[MIT](https://tldrlegal.com/license/mit-license)
