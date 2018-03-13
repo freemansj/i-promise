@@ -3,7 +3,7 @@
  
 # installing
 ```bash
- npm install --save r-promise
+$ npm install --save r-promise
 ```
 
 # licence
